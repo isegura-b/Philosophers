@@ -1,24 +1,9 @@
+#incude "../inc/philo.h"
 
-
-void    ft_w_error(char *str)
+void    ft_error(char *error_str, void set_free)
 {
-    int len;
-
-    lne = 0;
-    while (str[len])
-        len++;
-    write(2, "Error: ", 7);
-	write(2, str, len);
-	write(2, "\n", 1);
-}
-
-int ft_error(int    err_nbr)
-{
-    if (err_nbr == 1)
-        ft_w_error("");
-    if (err_nbr == 2)
-        ft_w_error("");
-    if (err_nbr == 3)
-        ft_w_error("");
-        retunr (1);
+    printf("Error : %s\n", error_str);
+    if (set_free)
+        free(set_free);
+    exit(EXIT_FAILURE);
 }

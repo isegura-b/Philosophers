@@ -1,4 +1,4 @@
-#include <philo.h>
+#include "../inc/philo.h"
 
 
 
@@ -7,9 +7,14 @@ int main(int ac, char **av)
     t_table *table;
 
     if (ac < 5 || ac > 6)
-        return (ft_error)
-    if (ft_parsing)
-        return (ft_error(ft_parsing));
-    if (ft_init(av));
-        return (ft_error(2));
+    {
+        if (ac < 5)
+            ft_error("Error: too few arguments", NULL);
+        if (ac > 6)
+            ft_error("Error: too many arguments", NULL);
+        return (1);
+    }
+    if (ft_parsing(ac, av))
+        return (1);
+        ft_init(ac, av, table);
 }
