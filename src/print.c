@@ -33,15 +33,15 @@ void    print_status(t_philo *philo, int status)
     if (philo->table->dead == 0)
     {
         if (status == EAT)
-            printf("%ld %d is eating\n", current_time, philo->id);
+            printf(PINK "%ld %d is eating\n" RESET, current_time, philo->id);
         else if (status == SLEEP)
-            printf("%ld %d is sleeping\n", current_time, philo->id);
+            printf(BLUE "%ld %d is sleeping\n" RESET, current_time, philo->id);
         else if (status == THINK)
-            printf("%ld %d is thinking\n", current_time, philo->id);
-        else if (status == FORK_1 || status == FORK_2)
-            printf("%ld %d has taken a fork\n", current_time, philo->id);
+            printf(GREEN "%ld %d is thinking\n" RESET, current_time, philo->id);
+        else if (status == FORK)
+            printf(PURPLE "%ld %d has taken a fork\n" RESET, current_time, philo->id);
         else if (status == DIE)
-            printf("%ld %d died\n", current_time, philo->id);
+            printf(RED "%ld %d died\n" RESET, current_time, philo->id);
     }
     pthread_mutex_unlock(&philo->table->print);
 }

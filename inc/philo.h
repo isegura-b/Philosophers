@@ -14,10 +14,16 @@ enum
 	SLEEP,
 	THINK,
 	DIE,
-	FORK_1,
-	FORK_2,
+	FORK,
 };
 
+
+#define BLUE  "\033[34m" //sleep
+#define GREEN  "\033[32m" //think
+#define RED  "\033[31m" //die
+#define PINK  "\033[35m" //eat
+#define PURPLE  "\033[95m" //fork
+#define RESET "\033[0m"
 
 typedef struct s_philo t_philo;
 typedef struct s_table t_table;
