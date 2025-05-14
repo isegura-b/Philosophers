@@ -54,14 +54,15 @@ int arg_is_digit(int ac, char **av)
 int ft_int_lim(int ac, char **av)
 {
 	int	i;
+	long	num;
 
-	i = 0;
+	i = 1;
 	while(i < ac)
 	{
-		if(ft_atoi(av[i]) < INT_MAX || ft_atoi(av[i]) > 0)
-			i++;
-		else
+		num = ft_atoi(av[i]);
+		if(num <= 0 || num > INT_MAX)
 			return (1);
+		i++;
 	}
 	return (0);
 }
@@ -70,6 +71,7 @@ int ft_parsing(int ac, char **av)
 {
 	if (ft_int_lim(ac, av) || arg_is_digit(ac, av))
 		return (ft_error("invalid args", NULL), 1);
-    if (ft_atoi(av[1]) > 200 || ft_atoi(av[1]) <= 0)
-        return (ft_error("invalid number of filos", NULL), 1);
+	if (ft_atoi(av[1]) > 200 || ft_atoi(av[1]) <= 0)
+		return (ft_error("invalid number of filos", NULL), 1);
+	return (0);
 }

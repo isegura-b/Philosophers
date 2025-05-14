@@ -1,20 +1,5 @@
 #include "../inc/philo.h"
 
-void    ft_cleanup(t_table *table, int n)
-{
-    int i;
-
-    i = 0;
-    while (i < n)
-    {
-        pthread_mutex_destroy(&table->philo[i].r_fork);
-        pthread_mutex_destroy(&table->philo[i].philo_full);
-        i++;
-    }
-    pthread_mutex_destroy(&table->lock_general);
-    pthread_mutex_destroy(&table->print);
-    free(table->philo);
-}
 
 static void    ft_init_table(char **av, t_table *table)
 {    
@@ -28,10 +13,11 @@ static void    ft_init_table(char **av, t_table *table)
         table->t_eaten = -1;
     table->dead = 0;
     table->start_time = get_time();
-    if (pthread_mutex_init(&table->lock_general, NULL))
-        ft_error("mutex error", NULL);
+    table->lock_general.is_locked = 0;
+    if (pthread_mutex_init(&table->lock_general.mutex, NULL))
+        ft_error("mutex error", (void *)table);
     if (pthread_mutex_init(&table->print, NULL))
-        ft_error("mutex error", NULL);
+        ft_error("mutex error", (void *)table);
 }
 
 static void    ft_init_filo(t_table *table)
@@ -42,8 +28,8 @@ static void    ft_init_filo(t_table *table)
     table->philo = malloc(sizeof(t_philo) * table->nbr_philo);
     if (!table->philo)
     {
-        ft_cleanup(table, 0);
-        ft_error("malloc failed", NULL);
+        ft_cleanup(table);
+        ft_error("malloc failed", (void *)table);
     }
     while (i < table->nbr_philo)
     {
@@ -53,13 +39,13 @@ static void    ft_init_filo(t_table *table)
         table->philo[i].nbr_eaten = 0;
         table->philo[i].dead = 0;
         if (pthread_mutex_init(&table->philo[i].r_fork, NULL))
-            ft_error("mutex error", NULL);
+            ft_error("mutex error", (void *)table);
         if (table->nbr_philo > 1)
-            table->philo[i].l_fork = &table->philo[i + 1].r_fork;
+            table->philo[i].l_fork = &table->philo[(i + 1) % table->nbr_philo].r_fork;
         else
             table->philo[i].l_fork = NULL;
         if (pthread_mutex_init(&table->philo[i].philo_full, NULL))
-            ft_error("mutex error", NULL);
+            ft_error("mutex error", (void *)table);
         i++;
     }
 }
@@ -69,17 +55,17 @@ static void ft_prep_sim(t_table *table)
     int i;
 
     i = 0;
-    pthread_mutex_lock(&table->lock_general);
+    lock_mutex(&table->lock_general);
     while (i < table->nbr_philo)
     {
-        if (pthread_create(&table->philo[i].thread, NULL, ft_routine, &table->philo[i]))
+        if (pthread_create(&table->philo[i].thread, NULL, ft_routine, &table->philo[i])) // aqui empuieza a la funcion de la rutina
         {
-            pthread_mutex_unlock(&table->lock_general);
-            ft_error("thread creation failed", NULL);
+            unlock_mutex(&table->lock_general);
+            ft_error("thread creation failed", (void *)table);
         }
         i++;
     }
-    pthread_mutex_unlock(&table->lock_general);
+    unlock_mutex(&table->lock_general);
     i = 0;
     while (i < table->nbr_philo)
     {
@@ -88,12 +74,11 @@ static void ft_prep_sim(t_table *table)
     }
 }
 
-
-int ft_init(int ac, char **av, t_table *table)
+int ft_init(char **av, t_table *table)
 {
     ft_init_table(av, table);
     ft_init_filo(table);
     ft_prep_sim(table);
-    ft_cleanup(table, table->nbr_philo);
+    ft_cleanup(table);
     return (0);
 }
