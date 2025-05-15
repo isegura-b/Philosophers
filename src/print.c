@@ -27,22 +27,26 @@ void    ft_error(char *error_str, void *set_free)
 void    print_status(t_philo *philo, int status)
 {
     long    current_time;
+    int     is_dead;
 
     current_time = get_time() - philo->table->start_time;
-    pthread_mutex_lock(&philo->table->print);
-    if (philo->table->dead == 0)
+    is_dead = philo->table->dead;
+    if (!is_dead)
     {
+        pthread_mutex_lock(&philo->table->print);
         if (status == EAT)
-            printf(PINK "%ld %d is eating\n" RESET, current_time, philo->id);
+            printf(PINK "%6ld %5d is eating\n" RESET, current_time, philo->id);
         else if (status == SLEEP)
-            printf(BLUE "%ld %d is sleeping\n" RESET, current_time, philo->id);
+            printf(BLUE "%6ld %5d is sleeping\n" RESET, current_time, philo->id);
         else if (status == THINK)
-            printf(GREEN "%ld %d is thinking\n" RESET, current_time, philo->id);
-        else if (status == FORK)
-            printf(PURPLE "%ld %d has taken a fork\n" RESET, current_time, philo->id);
+            printf(GREEN "%6ld %5d is thinking\n" RESET, current_time, philo->id);
+        else if (status == FORK_R)
+            printf(PURPLE_R "%6ld %5d has taken the right fork\n" RESET, current_time, philo->id);
+        else if (status == FORK_L)
+            printf(PURPLE_L "%6ld %5d has taken the left fork\n" RESET, current_time, philo->id);
         else if (status == DIE)
-            printf(RED "%ld %d died\n" RESET, current_time, philo->id);
+            printf(RED "%6ld %5d died\n" RESET, current_time, philo->id);
+        pthread_mutex_unlock(&philo->table->print);
     }
-    pthread_mutex_unlock(&philo->table->print);
 }
 

@@ -25,12 +25,15 @@ void    ft_usleep(long time)
 
 int someone_dead(t_philo *philo)
 {
-    if (philo->table->lock_general.is_locked || philo->table->dead)
-        return (1);
-    return (0);
+    int ret;
+
+    pthread_mutex_lock(&philo->table->lock_general.mutex);
+    ret = (philo->table->lock_general.is_locked || philo->table->dead);
+    pthread_mutex_unlock(&philo->table->lock_general.mutex);
+    return (ret);
 }
 
-int is_alive(t_philo *philo)
+int is_not_alive(t_philo *philo)
 {
     long current_time;
 
@@ -40,10 +43,12 @@ int is_alive(t_philo *philo)
         lock_mutex(&philo->table->lock_general);
         if (!philo->table->dead)
         {
-            philo->table->dead = 1;
             print_status(philo, DIE);
+            philo->table->dead = 1;
+            philo->table->lock_general.is_locked = 1;
         }
-        return (0);
+        pthread_mutex_unlock(&philo->table->lock_general.mutex);
+        return (1);
     }
-    return (1);
+    return (0);
 }
