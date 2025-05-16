@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: isegura- <isegura-@student.42barcelon      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/16 11:01:45 by isegura-          #+#    #+#             */
+/*   Updated: 2025/05/16 11:05:13 by isegura-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../inc/philo.h"
 
 long    get_time(void)
@@ -40,7 +52,7 @@ int is_not_alive(t_philo *philo)
     current_time = get_time();
     if (current_time - philo->last_eat >= philo->table->tt_die)
     {
-        lock_mutex(&philo->table->lock_general);
+        pthread_mutex_lock(&philo->table->lock_general.mutex);
         if (!philo->table->dead)
         {
             print_status(philo, DIE);

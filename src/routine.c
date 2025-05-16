@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   routine.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: isegura- <isegura-@student.42barcelon      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/16 10:57:35 by isegura-          #+#    #+#             */
+/*   Updated: 2025/05/16 11:03:10 by isegura-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../inc/philo.h"
 
 void    eat(t_philo *philo)
@@ -68,10 +80,12 @@ void *ft_routine(void *arg)
 
     if (philo->id % 2 == 0)
         ft_usleep(philo->table->tt_eat);
-    while (philo->table->t_eaten == -1 || philo->nbr_eaten < philo->table->t_eaten)
+    while (1)
     {
         if (ft_eat(philo))
             return (NULL);
+		if (philo->table->t_eaten != -1 && philo->nbr_eaten >= philo->table->t_eaten)
+			return (NULL);
         if (ft_sleep(philo))
             return (NULL);
         if (ft_think(philo))

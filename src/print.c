@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   print.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: isegura- <isegura-@student.42barcelon      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/16 10:56:30 by isegura-          #+#    #+#             */
+/*   Updated: 2025/05/16 11:08:12 by isegura-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../inc/philo.h"
 
 void    ft_cleanup(t_table *table)
@@ -30,6 +42,7 @@ void    print_status(t_philo *philo, int status)
     int     is_dead;
 
     current_time = get_time() - philo->table->start_time;
+//	lock_mutex(&philo->table->lock_general);
     is_dead = philo->table->dead;
     if (!is_dead)
     {
@@ -48,5 +61,6 @@ void    print_status(t_philo *philo, int status)
             printf(RED "%6ld %5d died\n" RESET, current_time, philo->id);
         pthread_mutex_unlock(&philo->table->print);
     }
+//	unlock_mutex(&philo->table->lock_general);
 }
 

@@ -1,25 +1,54 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: isegura- <isegura-@student.42barcelon      +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2025/05/16 09:29:49 by isegura-          #+#    #+#              #
+#    Updated: 2025/05/16 09:42:01 by isegura-         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 NAME = philo
-CC = gcc
-CFLAGS = -Wall -Wextra -Werror -fsanitize=thread -pthread
-SRC_DIR = src
-INC_DIR = inc
-SRC = $(wildcard $(SRC_DIR)/*.c)
-OBJ = $(SRC:.c=.o)
+CC = cc
+CFLAGS = -MMD -Wall -Wextra -Werror -g -fsanitize=thread
+SRC_DIR = ./src
+OBJ_DIR = ./obj
+INC_DIR = ./inc
+
+
+SRC = 	$(SRC_DIR)/init.c \
+		$(SRC_DIR)/main.c \
+		$(SRC_DIR)/mutex.c \
+		$(SRC_DIR)/parsing.c \
+		$(SRC_DIR)/print.c \
+		$(SRC_DIR)/routine.c \
+		$(SRC_DIR)/utils.c
+
+OBJ = $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRC))
+
+DEPS = $(OBJ:%.o=%.d)
+
+INCLUDE = $(INC_DIR)/philo.h
 
 all: $(NAME)
 
-$(NAME): $(OBJ)
-	$(CC) $(CFLAGS) $(OBJ) -o $(NAME)
+$(NAME): 	$(OBJ)
+			$(CC) $(CFLAGS) $(OBJ) -o $(NAME)
 
-%.o: %.c
-	$(CC) $(CFLAGS) -I$(INC_DIR) -c $< -o $@
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(INCLUDE) Makefile
+				mkdir -p $(OBJ_DIR)
+				$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -f $(OBJ)
+		rm -rf $(OBJ_DIR)
 
 fclean: clean
-	rm -f $(NAME)
+		rm -f $(NAME)
 
 re: fclean all
 
-.PHONY: all clean fclean re 
+-include $(DEPS)
+
+.PHONY: all clean fclean re bonus
