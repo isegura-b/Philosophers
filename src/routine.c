@@ -80,12 +80,12 @@ void *ft_routine(void *arg)
 
     if (philo->id % 2 == 0)
         ft_usleep(philo->table->tt_eat);
-    while (1)
+    while (!someone_dead(philo))
     {
         if (ft_eat(philo))
             return (NULL);
-		if (philo->table->t_eaten != -1 && philo->nbr_eaten >= philo->table->t_eaten)
-			return (NULL);
+        if (philo->table->t_eaten != -1 && philo->nbr_eaten >= philo->table->t_eaten)
+            return (NULL);
         if (ft_sleep(philo))
             return (NULL);
         if (ft_think(philo))

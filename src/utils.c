@@ -40,7 +40,7 @@ int someone_dead(t_philo *philo)
     int ret;
 
     pthread_mutex_lock(&philo->table->lock_general.mutex);
-    ret = (philo->table->lock_general.is_locked || philo->table->dead);
+    ret = philo->table->dead;
     pthread_mutex_unlock(&philo->table->lock_general.mutex);
     return (ret);
 }
@@ -50,17 +50,15 @@ int is_not_alive(t_philo *philo)
     long current_time;
 
     current_time = get_time();
-    if (current_time - philo->last_eat >= philo->table->tt_die)
+    pthread_mutex_lock(&philo->table->lock_general.mutex);
+    if (current_time - philo->last_eat >= philo->table->tt_die && !philo->table->dead)
     {
-        pthread_mutex_lock(&philo->table->lock_general.mutex);
-        if (!philo->table->dead)
-        {
-            print_status(philo, DIE);
-            philo->table->dead = 1;
-            philo->table->lock_general.is_locked = 1;
-        }
+        philo->table->dead = 1;
+        philo->table->lock_general.is_locked = 1;
+        print_status(philo, DIE);
         pthread_mutex_unlock(&philo->table->lock_general.mutex);
         return (1);
     }
+    pthread_mutex_unlock(&philo->table->lock_general.mutex);
     return (0);
 }

@@ -42,8 +42,19 @@ void    print_status(t_philo *philo, int status)
     int     is_dead;
 
     current_time = get_time() - philo->table->start_time;
-//	lock_mutex(&philo->table->lock_general);
+    
+    if (status == DIE)
+    {
+        pthread_mutex_lock(&philo->table->print);
+        printf(RED "%6ld %5d died\n" RESET, current_time, philo->id);
+        pthread_mutex_unlock(&philo->table->print);
+        return;
+    }
+
+    pthread_mutex_lock(&philo->table->lock_general.mutex);
     is_dead = philo->table->dead;
+    pthread_mutex_unlock(&philo->table->lock_general.mutex);
+    
     if (!is_dead)
     {
         pthread_mutex_lock(&philo->table->print);
@@ -57,10 +68,7 @@ void    print_status(t_philo *philo, int status)
             printf(PURPLE_R "%6ld %5d has taken the right fork\n" RESET, current_time, philo->id);
         else if (status == FORK_L)
             printf(PURPLE_L "%6ld %5d has taken the left fork\n" RESET, current_time, philo->id);
-        else if (status == DIE)
-            printf(RED "%6ld %5d died\n" RESET, current_time, philo->id);
         pthread_mutex_unlock(&philo->table->print);
     }
-//	unlock_mutex(&philo->table->lock_general);
 }
 
