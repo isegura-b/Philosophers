@@ -87,7 +87,10 @@ static void	ft_prep_sim(t_table *table)
 	i = 0;
 	while (i < table->nbr_philo)
 	{
-		pthread_join(table->philo[i].thread, NULL);
+		if (pthread_join(table->philo[i].thread, NULL))
+		{
+			ft_error("thread join failed", (void *)table);
+		}
 		i++;
 	}
 }

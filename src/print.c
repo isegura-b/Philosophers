@@ -55,23 +55,21 @@ static void	print_not_die(t_philo *philo, int status, long current_time)
 void	print_status(t_philo *philo, int status)
 {
 	long	current_time;
-	int		is_dead;
 
 	current_time = get_time() - philo->table->start_time;
-	if (status == DIE)
-	{
-		pthread_mutex_lock(&philo->table->print);
-		printf(RED "%6ld %5d died\n" RESET, current_time, philo->id);
-		pthread_mutex_unlock(&philo->table->print);
-		return ;
-	}
 	pthread_mutex_lock(&philo->table->lock_general.mutex);
-	is_dead = philo->table->dead;
-	pthread_mutex_unlock(&philo->table->lock_general.mutex);
-	if (!is_dead)
+	if (philo->table->dead && status != DIE)
 	{
-		pthread_mutex_lock(&philo->table->print);
-		print_not_die(philo, status, current_time);
-		pthread_mutex_unlock(&philo->table->print);
+		pthread_mutex_unlock(&philo->table->lock_general.mutex);
+		return;
 	}
+	if (status == DIE)
+		philo->table->dead = 1;
+	pthread_mutex_lock(&philo->table->print);
+	pthread_mutex_unlock(&philo->table->lock_general.mutex);
+	if (status == DIE)
+		printf(RED "%6ld %5d died\n" RESET, current_time, philo->id);
+	else
+		print_not_die(philo, status, current_time);
+	pthread_mutex_unlock(&philo->table->print);
 }

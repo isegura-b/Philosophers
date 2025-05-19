@@ -79,8 +79,10 @@ void	*ft_routine(void *arg)
 	unlock_mutex(&philo->table->lock_general);
 	if (philo->id % 2 == 0)
 		ft_usleep(philo->table->tt_eat);
-	while (!someone_dead(philo))
+	while (1)
 	{
+		if (someone_dead(philo) || is_not_alive(philo))
+			return (NULL);
 		if (ft_eat(philo))
 			return (NULL);
 		if (philo->table->t_eaten != -1
