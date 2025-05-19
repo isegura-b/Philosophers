@@ -91,6 +91,7 @@ void    print_status(t_philo *philo, int status);
 
 //utils.c
 void    ft_usleep(long time);
+long get_elapsed_time(void);
 long    get_time(void);
 int     someone_dead(t_philo *philo);
 int     is_not_alive(t_philo *philo);

@@ -20,19 +20,25 @@ long	get_time(void)
 	if (start_time == 0)
 	{
 		gettimeofday(&time, NULL);
-		start_time = ((time.tv_sec * 1000) + time.tv_usec / 1000);
+		start_time = (time.tv_sec * 1000) + (time.tv_usec / 1000);
 	}
 	gettimeofday(&time, NULL);
-	return ((time.tv_sec * 1000) + (time.tv_usec * 0.001) - start_time);
+	return ((time.tv_sec * 1000) + (time.tv_usec / 1000) - start_time);
 }
 
 void	ft_usleep(long time)
 {
 	long	start;
+	long	current;
 
 	start = get_time();
-	while (get_time() - start < time)
+	while (1)
+	{
+		current = get_time();
+		if (current - start >= time)
+			break;
 		usleep(100);
+	}
 }
 
 int	someone_dead(t_philo *philo)
