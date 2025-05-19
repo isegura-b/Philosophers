@@ -34,13 +34,13 @@ int	ft_atoi(char *nptr)
 	}
 	while (*nptr >= '0' && *nptr <= '9')
 	{
-		result = result * 10 +(*nptr - '0');
+		result = result * 10 + (*nptr - '0');
 		nptr++;
 	}
 	return (result * sign);
 }
 
-int arg_is_digit(int ac, char **av)
+int	arg_is_digit(int ac, char **av)
 {
 	int	i;
 	int	j;
@@ -49,11 +49,11 @@ int arg_is_digit(int ac, char **av)
 	while (i < ac)
 	{
 		j = 0;
-		if (av[i][j] == '\0') 
+		if (av[i][j] == '\0')
 			return (1);
 		while (av[i][j])
 		{
-			if(av[i][j] >= '0' && av[i][j] <= '9')
+			if (av[i][j] >= '0' && av[i][j] <= '9')
 				j++;
 			else
 				return (1);
@@ -63,23 +63,23 @@ int arg_is_digit(int ac, char **av)
 	return (0);
 }
 
-int ft_int_lim(int ac, char **av)
+int	ft_int_lim(int ac, char **av)
 {
-	int	i;
+	int		i;
 	long	num;
 
 	i = 1;
-	while(i < ac)
+	while (i < ac)
 	{
 		num = ft_atoi(av[i]);
-		if(num <= 0 || num > INT_MAX)
+		if (num <= 0 || num > INT_MAX)
 			return (1);
 		i++;
 	}
 	return (0);
 }
 
-int ft_parsing(int ac, char **av)
+int	ft_parsing(int ac, char **av)
 {
 	if (ft_int_lim(ac, av) || arg_is_digit(ac, av))
 		return (ft_error("invalid args", NULL), 1);

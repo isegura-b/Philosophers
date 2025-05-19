@@ -12,9 +12,9 @@
 
 #include "../inc/philo.h"
 
-long    get_time(void)
+long	get_time(void)
 {
-    struct timeval  time;
+	struct timeval	time;
 	static time_t	start_time;
 
 	if (start_time == 0)
@@ -26,39 +26,40 @@ long    get_time(void)
 	return ((time.tv_sec * 1000) + (time.tv_usec * 0.001) - start_time);
 }
 
-void    ft_usleep(long time)
+void	ft_usleep(long time)
 {
-    long    start;
+	long	start;
 
-    start = get_time();
-    while (get_time() - start < time)
-        usleep(100);
+	start = get_time();
+	while (get_time() - start < time)
+		usleep(100);
 }
 
-int someone_dead(t_philo *philo)
+int	someone_dead(t_philo *philo)
 {
-    int ret;
+	int	ret;
 
-    pthread_mutex_lock(&philo->table->lock_general.mutex);
-    ret = philo->table->dead;
-    pthread_mutex_unlock(&philo->table->lock_general.mutex);
-    return (ret);
+	pthread_mutex_lock(&philo->table->lock_general.mutex);
+	ret = philo->table->dead;
+	pthread_mutex_unlock(&philo->table->lock_general.mutex);
+	return (ret);
 }
 
-int is_not_alive(t_philo *philo)
+int	is_not_alive(t_philo *philo)
 {
-    long current_time;
+	long	current_time;
 
-    current_time = get_time();
-    pthread_mutex_lock(&philo->table->lock_general.mutex);
-    if (current_time - philo->last_eat >= philo->table->tt_die && !philo->table->dead)
-    {
-        philo->table->dead = 1;
-        philo->table->lock_general.is_locked = 1;
-        print_status(philo, DIE);
-        pthread_mutex_unlock(&philo->table->lock_general.mutex);
-        return (1);
-    }
-    pthread_mutex_unlock(&philo->table->lock_general.mutex);
-    return (0);
+	current_time = get_time();
+	pthread_mutex_lock(&philo->table->lock_general.mutex);
+	if (current_time - philo->last_eat >= philo->table->tt_die
+		&& !philo->table->dead)
+	{
+		philo->table->dead = 1;
+		philo->table->lock_general.is_locked = 1;
+		print_status(philo, DIE);
+		pthread_mutex_unlock(&philo->table->lock_general.mutex);
+		return (1);
+	}
+	pthread_mutex_unlock(&philo->table->lock_general.mutex);
+	return (0);
 }
