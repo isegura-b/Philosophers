@@ -6,7 +6,7 @@
 /*   By: isegura- <isegura-@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 11:01:45 by isegura-          #+#    #+#             */
-/*   Updated: 2025/05/16 11:05:13 by isegura-         ###   ########.fr       */
+/*   Updated: 2025/05/20 10:35:20 by isegura-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	ft_usleep(long time)
 	{
 		current = get_time();
 		if (current - start >= time)
-			break;
+			break ;
 		usleep(100);
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: isegura- <isegura-@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 10:56:30 by isegura-          #+#    #+#             */
-/*   Updated: 2025/05/19 13:40:25 by isegura-         ###   ########.fr       */
+/*   Updated: 2025/05/20 10:35:09 by isegura-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	print_status(t_philo *philo, int status)
 	if (philo->table->dead && status != DIE)
 	{
 		pthread_mutex_unlock(&philo->table->lock_general.mutex);
-		return;
+		return ;
 	}
 	if (status == DIE)
 		philo->table->dead = 1;
