@@ -26,13 +26,13 @@ long	get_time(void)
 	return ((time.tv_sec * 1000) + (time.tv_usec / 1000) - start_time);
 }
 
-void	ft_usleep(long time)
+void	ft_usleep(long time, t_philo *philo)
 {
 	long	start;
 	long	current;
 
 	start = get_time();
-	while (1)
+	while (!is_not_alive(philo))
 	{
 		current = get_time();
 		if (current - start >= time)

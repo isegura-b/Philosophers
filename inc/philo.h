@@ -6,7 +6,7 @@
 /*   By: isegura- <isegura-@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 10:36:29 by isegura-          #+#    #+#             */
-/*   Updated: 2025/05/27 09:49:29 by isegura-         ###   ########.fr       */
+/*   Updated: 2025/05/27 16:08:26 by isegura-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ void					ft_error(char *error_str, void *set_free);
 void					print_status(t_philo *philo, int status);
 
 // utils.c
-void					ft_usleep(long time);
+void					ft_usleep(long time, t_philo *philo);
 long					get_elapsed_time(void);
 long					get_time(void);
 int						someone_dead(t_philo *philo);
