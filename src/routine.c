@@ -6,15 +6,17 @@
 /*   By: isegura- <isegura-@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 10:57:35 by isegura-          #+#    #+#             */
-/*   Updated: 2025/05/16 11:03:10 by isegura-         ###   ########.fr       */
+/*   Updated: 2025/05/27 10:20:18 by isegura-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/philo.h"
 
-void	eat(t_philo *philo)
+static int	eat(t_philo *philo)
 {
-	if (philo->id % 2 != 0)
+	if (((philo->last_eat + philo->table->tt_eat) * 0.5 < get_time()))
+		usleep(100);
+	if (philo->id % 2 == 0)
 	{
 		pthread_mutex_lock(&philo->r_fork);
 		print_status(philo, FORK_R);
@@ -28,12 +30,19 @@ void	eat(t_philo *philo)
 		pthread_mutex_lock(&philo->r_fork);
 		print_status(philo, FORK_R);
 	}
+	if (is_not_alive(philo))
+	{
+		pthread_mutex_unlock(&philo->r_fork);
+		pthread_mutex_unlock(philo->l_fork);
+		return (1);
+	}
 	philo->last_eat = get_time() - philo->table->start_time;
 	philo->nbr_eaten++;
 	print_status(philo, EAT);
 	ft_usleep(philo->table->tt_eat);
 	pthread_mutex_unlock(&philo->r_fork);
 	pthread_mutex_unlock(philo->l_fork);
+	return (0);
 }
 
 int	ft_eat(t_philo *philo)
@@ -41,7 +50,10 @@ int	ft_eat(t_philo *philo)
 	if (someone_dead(philo) || is_not_alive(philo))
 		return (1);
 	if (philo->table->nbr_philo > 1)
-		eat(philo);
+	{
+		if (eat(philo))
+			return (1);
+	}
 	else
 	{
 		pthread_mutex_lock(&philo->r_fork);
@@ -78,7 +90,7 @@ void	*ft_routine(void *arg)
 	lock_mutex(&philo->table->lock_general);
 	unlock_mutex(&philo->table->lock_general);
 	if (philo->id % 2 == 0)
-		ft_usleep(philo->table->tt_eat / 2);
+		ft_usleep(philo->table->tt_eat / 10);
 	while (1)
 	{
 		if (someone_dead(philo) || is_not_alive(philo))

@@ -6,13 +6,13 @@
 #    By: isegura- <isegura-@student.42barcelon      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/16 09:29:49 by isegura-          #+#    #+#              #
-#    Updated: 2025/05/20 10:38:21 by isegura-         ###   ########.fr        #
+#    Updated: 2025/05/27 09:57:48 by isegura-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philo
 CC = cc
-CFLAGS = -MMD -Wall -Wextra -Werror #-fsanitize=address #-fsanitize=thread
+CFLAGS = -MMD -Wall -Wextra -Werror -fsanitize=thread #-fsanitize=thread
 SRC_DIR = ./src
 OBJ_DIR = ./obj
 INC_DIR = ./inc
