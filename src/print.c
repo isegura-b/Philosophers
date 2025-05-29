@@ -6,7 +6,7 @@
 /*   By: isegura- <isegura-@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 10:56:30 by isegura-          #+#    #+#             */
-/*   Updated: 2025/05/20 10:35:09 by isegura-         ###   ########.fr       */
+/*   Updated: 2025/05/27 16:39:25 by isegura-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,8 @@ void	print_status(t_philo *philo, int status)
 {
 	long	current_time;
 
-	current_time = get_time() - philo->table->start_time;
 	pthread_mutex_lock(&philo->table->lock_general.mutex);
+	current_time = get_time () - philo->table->start_time;
 	if (philo->table->dead && status != DIE)
 	{
 		pthread_mutex_unlock(&philo->table->lock_general.mutex);

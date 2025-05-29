@@ -6,7 +6,7 @@
 /*   By: isegura- <isegura-@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 10:36:29 by isegura-          #+#    #+#             */
-/*   Updated: 2025/05/27 16:08:26 by isegura-         ###   ########.fr       */
+/*   Updated: 2025/05/29 10:10:21 by isegura-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ struct					s_table
 	t_mutex_status		lock_general;
 	pthread_mutex_t		print;
 	t_philo				*philo;
+	int					start;
 };
 
 // init.c

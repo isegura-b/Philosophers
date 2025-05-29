@@ -6,7 +6,7 @@
 /*   By: isegura- <isegura-@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 10:56:39 by isegura-          #+#    #+#             */
-/*   Updated: 2025/05/19 13:39:31 by isegura-         ###   ########.fr       */
+/*   Updated: 2025/05/29 10:31:30 by isegura-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,9 @@ static void	ft_init_table(char **av, t_table *table)
 	else
 		table->t_eaten = -1;
 	table->dead = 0;
-	table->start_time = get_time();
+//	table->start_time = get_time();
 	table->lock_general.is_locked = 0;
+	table->start = 0;
 	if (pthread_mutex_init(&table->lock_general.mutex, NULL))
 		ft_error("mutex error", (void *)table);
 	if (pthread_mutex_init(&table->print, NULL))
@@ -72,7 +73,7 @@ static void	ft_prep_sim(t_table *table)
 	int	i;
 
 	i = 0;
-	lock_mutex(&table->lock_general);
+	pthread_mutex_lock(&table->lock_general.mutex);
 	while (i < table->nbr_philo)
 	{
 		if (pthread_create(&table->philo[i].thread, NULL,
@@ -83,7 +84,9 @@ static void	ft_prep_sim(t_table *table)
 		}
 		i++;
 	}
-	unlock_mutex(&table->lock_general);
+	if (i == table->nbr_philo)
+		table->start_time = get_time();
+	pthread_mutex_unlock(&table->lock_general.mutex);
 	i = 0;
 	while (i < table->nbr_philo)
 	{

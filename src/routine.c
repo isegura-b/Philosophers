@@ -6,7 +6,7 @@
 /*   By: isegura- <isegura-@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 10:57:35 by isegura-          #+#    #+#             */
-/*   Updated: 2025/05/27 16:10:26 by isegura-         ###   ########.fr       */
+/*   Updated: 2025/05/29 10:34:34 by isegura-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static int	eat(t_philo *philo)
 {
-	if (((philo->last_eat + philo->table->tt_eat) * 0.5 < get_time()))
+	if (philo->last_eat && ((philo->last_eat + philo->table->tt_eat) * 0.5 < get_time()))
 		usleep(100);
 	if (philo->id % 2 == 0)
 	{
@@ -87,14 +87,12 @@ void	*ft_routine(void *arg)
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
-	lock_mutex(&philo->table->lock_general);
-	unlock_mutex(&philo->table->lock_general);
+	pthread_mutex_lock(&philo->table->lock_general.mutex);
+	pthread_mutex_unlock(&philo->table->lock_general.mutex);
 	if (philo->id % 2 == 0)
 		ft_usleep(philo->table->tt_eat / 10, philo);
 	while (1)
 	{
-		if (someone_dead(philo) || is_not_alive(philo))
-			return (NULL);
 		if (ft_eat(philo))
 			return (NULL);
 		if (philo->table->t_eaten != -1
