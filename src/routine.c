@@ -6,7 +6,7 @@
 /*   By: isegura- <isegura-@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 10:57:35 by isegura-          #+#    #+#             */
-/*   Updated: 2025/05/29 10:34:34 by isegura-         ###   ########.fr       */
+/*   Updated: 2025/05/29 10:59:17 by isegura-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 static int	eat(t_philo *philo)
 {
-	if (philo->last_eat && ((philo->last_eat + philo->table->tt_eat) * 0.5 < get_time()))
+	if (philo->last_eat && ((philo->last_eat + philo->table->tt_eat)
+			* 0.5 < get_time()))
 		usleep(100);
 	if (philo->id % 2 == 0)
 	{
@@ -36,12 +37,6 @@ static int	eat(t_philo *philo)
 		pthread_mutex_unlock(philo->l_fork);
 		return (1);
 	}
-	philo->last_eat = get_time() - philo->table->start_time;
-	philo->nbr_eaten++;
-	print_status(philo, EAT);
-	ft_usleep(philo->table->tt_eat, philo);
-	pthread_mutex_unlock(&philo->r_fork);
-	pthread_mutex_unlock(philo->l_fork);
 	return (0);
 }
 
@@ -53,6 +48,15 @@ int	ft_eat(t_philo *philo)
 	{
 		if (eat(philo))
 			return (1);
+		else
+		{
+			philo->last_eat = get_time() - philo->table->start_time;
+			philo->nbr_eaten++;
+			print_status(philo, EAT);
+			ft_usleep(philo->table->tt_eat, philo);
+			pthread_mutex_unlock(&philo->r_fork);
+			pthread_mutex_unlock(philo->l_fork);
+		}
 	}
 	else
 	{

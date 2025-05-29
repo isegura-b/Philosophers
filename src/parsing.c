@@ -6,7 +6,7 @@
 /*   By: isegura- <isegura-@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 10:57:25 by isegura-          #+#    #+#             */
-/*   Updated: 2025/05/16 10:57:27 by isegura-         ###   ########.fr       */
+/*   Updated: 2025/05/29 12:33:12 by isegura-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ int	ft_parsing(int ac, char **av)
 {
 	if (ft_int_lim(ac, av) || arg_is_digit(ac, av))
 		return (ft_error("invalid args", NULL), 1);
-	if (ft_atoi(av[1]) > 200 || ft_atoi(av[1]) <= 0)
+	if (ft_atoi(av[1]) <= 0)
 		return (ft_error("invalid number of filos", NULL), 1);
 	return (0);
 }
